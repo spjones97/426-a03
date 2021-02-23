@@ -1,4 +1,7 @@
 import mpg_data from "./data/mpg_data.js";
+import {
+    sort
+} from "./medium_1.js";
 
 /*
 mpg_data is imported for you but that is for testing purposes only. All of the functions should use
@@ -18,9 +21,15 @@ queries.
  *
  */
 export function searchHighPower(car_data, minHorsepower, minTorque) {
-
+    let out = [];
+    for (let i = 0; i < car_data.length; i++) {
+        if (car_data[i]['horsepower'] >= minHorsepower &&
+            car_data[i]['torque'] >= minTorque) {
+            out[out.length] = car_data[i];
+        }
+    }
+    return out.sort((a, b) => b.horsepower - a.horsepower);
 }
-
 
 /**
  * @param {array} car_data
@@ -33,7 +42,14 @@ export function searchHighPower(car_data, minHorsepower, minTorque) {
  *
  */
 export function searchMpg(car_data, minCity, minHighway) {
-
+    let out = [];
+    for (let i = 0; i < car_data.length; i++) {
+        if (car_data[i]['highway_mpg'] >= minHighway &&
+            car_data[i]['city_mpg'] >= minCity) {
+            out[out.length] = car_data[i];
+        }
+    }
+    return out.sort((a, b) => b.highway_mpg - a.highway_mpg);
 }
 
 
@@ -46,9 +62,16 @@ export function searchMpg(car_data, minCity, minHighway) {
  * @returns {[]} array of cars
  */
 export function searchName(car_data, searchTerm) {
-
+    let out = [];
+    let term = searchTerm.toUpperCase();
+    for (let i = 0; i < car_data.length; i++) {
+        let temp = car_data[i]['id'].toUpperCase()
+        if (temp.includes(term)) {
+            out[out.length] = car_data[i];
+        }
+    }
+    return out;
 }
-
 
 /**
  * Find all cars made in the years asked for.
@@ -59,5 +82,20 @@ export function searchName(car_data, searchTerm) {
  * @returns {[]} an array of car objects
  */
 export function searchByYear(car_data, years) {
+    let out = [];
+    for (let i = 0; i < car_data.length; i++) {
+        if (exists(car_data[i]['year'], years)) {
+            out[out.length] = car_data[i];
+        }
+    }
+    return out.sort((a, b) => b.year - a.year);
+}
 
+export function exists(term, array) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] == term) {
+            return true;
+        }
+    }
+    return false;
 }
